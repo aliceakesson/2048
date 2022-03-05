@@ -29,6 +29,7 @@ namespace _2048
         readonly int[] b = { 218, 201, 122, 0, 0, 0 };
 
         bool up = false, down = false, right = false, left = false;
+        bool prevUp = false, prevDown = false, prevRight = false, prevLeft = false;
         int sequenceCount = 0;
 
         List<List<PictureBox>> box_positions = new List<List<PictureBox>>();
@@ -79,6 +80,8 @@ namespace _2048
 
         private void gameTimer_Tick(object sender, EventArgs e) 
         {
+
+            bool newPress = false; 
 
             if(sequenceCount == 0) // vid start
             {
@@ -141,9 +144,11 @@ namespace _2048
 
             }
 
-            if(up)
+            if(up && !prevUp)
             {
                 //Console.WriteLine("up");
+
+                newPress = true; 
 
                 for(int y = 1; y < 4; y++)
                 {
@@ -232,9 +237,11 @@ namespace _2048
                 }
 
             }
-            else if(down)
+            else if(down && !prevDown)
             {
                 //Console.WriteLine("down");
+
+                newPress = true; 
 
                 for(int y = 2; y >= 0; y--)
                 {
@@ -322,9 +329,11 @@ namespace _2048
                     }
                 } 
             }
-            else if(right)
+            else if(right && !prevRight)
             {
                 //Console.WriteLine("right");
+
+                newPress = true; 
 
                 for(int y = 0; y < 4; y++)
                 {
@@ -412,9 +421,11 @@ namespace _2048
                     }
                 } 
             }
-            else if(left)
+            else if(left && !prevLeft)
             {
                 //Console.WriteLine("left");
+
+                newPress = true; 
 
                 for(int y = 0; y < 4; y++)
                 {
@@ -502,7 +513,56 @@ namespace _2048
                     }
                 } 
             }
+            
+            if(newPress) //spawna ny box vid varje move 
+            {
+                
+                bool boardHasEmptySpot = false; 
+                for(int y = 0; y < 4; y++)
+                {
+                    for(int x = 0; x < 4; x++)
+                    {
+                        if(currentNumbers[y, x] == 0)
+                        {
+                            boardHasEmptySpot = true; 
+                            break; 
+                        }
+                    }
+                }
+                
+                if(boardHasEmptySpot)
+                {
 
+                    int y_index = 0, x_index = 0; 
+
+                    Random rnd = new Random();
+                    y_index = rnd.Next(0, 3);
+                    x_index = rnd.Next(0, 3);
+
+                    if(currentNumbers[y_index, x_index] != 0)
+                    {
+
+                        int safetyMargin = 100; //in case the while-loop never stops 
+                        int k = 0; 
+                        while(currentNumbers[y_index, x_index] != 0 && k < safetyMargin)
+                        {
+                            y_index = rnd.Next(0, 3);
+                            x_index = rnd.Next(0, 3);
+                            k++; 
+                        }
+
+                    }
+
+                    NewBox(x_index, y_index);
+
+                }
+
+            }
+
+            prevUp = up; 
+            prevDown = down; 
+            prevRight = right; 
+            prevLeft = left; 
 
         }
 
@@ -548,7 +608,14 @@ namespace _2048
             currentBoxes[y_index, x_index] = pb; 
             */
 
-            currentBoxes[y_index, x_index].BackColor = System.Drawing.Color.FromArgb(r[0], g[0], b[0]);
+            int placeInArray = 0; 
+            Random rnd = new Random();
+            float randomFloat = (float)rnd.NextDouble();
+
+            if(randomFloat <= 0.1f) 
+                placeInArray = 1; 
+            
+            currentBoxes[y_index, x_index].BackColor = System.Drawing.Color.FromArgb(r[placeInArray], g[placeInArray], b[placeInArray]);
             currentNumbers[y_index, x_index] = 2;
             currentBoxes[y_index, x_index].Visible = true; 
 
