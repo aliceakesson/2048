@@ -39,7 +39,7 @@ namespace _2048
                                   { 0, 0, 0, 0 },
                                   { 0, 0, 0, 0 },
                                   { 0, 0, 0, 0 } };
-
+        Label[,] numbers = new Label[4, 4];
 
         public Form1()
         {
@@ -138,7 +138,7 @@ namespace _2048
                         y_index = rnd.Next(0, 3);
                     }
                 }
-                NewBox(2, 1);
+                NewBox(1, 2);
 
                 PrintCurrentState();
 
@@ -179,6 +179,7 @@ namespace _2048
                                 currentNumbers[y - stepsUp, x] = currentNumbers[y, x];
                                 currentNumbers[y, x] = 0;
 
+
                                 Console.WriteLine("");
                                 Console.WriteLine("flytta upp");
                                 PrintCurrentState();
@@ -207,6 +208,7 @@ namespace _2048
 
                             currentBoxes[y - 1, x].BackColor = System.Drawing.Color.FromArgb(r[placeInArray], g[placeInArray], b[placeInArray]);
                             currentBoxes[y - 1, x].Visible = true; 
+                            
                             currentNumbers[y - 1, x] *= 2;
 
                             if (y < 3) // flytta allt annat upp ett snäpp 
@@ -516,7 +518,8 @@ namespace _2048
             
             if(newPress) //spawna ny box vid varje move 
             {
-                
+                UpdateNumbers();
+
                 bool boardHasEmptySpot = false; 
                 for(int y = 0; y < 4; y++)
                 {
@@ -585,6 +588,17 @@ namespace _2048
                     pb.Visible = false;
 
                     currentBoxes[i, j] = pb; 
+
+                    int margin = 22; 
+                    Label lbl = new Label();
+                    lbl.Text = "2";
+                    lbl.Parent = pb;
+                    lbl.SetBounds(boxWidth/2 - margin, boxWidth/2 - margin, 50, 50);
+                    lbl.ForeColor = label1.ForeColor; 
+                    lbl.Font = new Font("Arial", 30, FontStyle.Bold); 
+                    lbl.Visible = false; 
+
+                    numbers[i, j] = lbl; 
                 }
             }
 
@@ -619,6 +633,9 @@ namespace _2048
             currentNumbers[y_index, x_index] = 2;
             currentBoxes[y_index, x_index].Visible = true; 
 
+            numbers[y_index, x_index].Text = Math.Pow(2, placeInArray + 1) + "";
+            numbers[y_index, x_index].Visible = true; 
+
             //Label lbl = new Label();
             //lbl.Parent = panel1;
             //lbl.Text = "2";
@@ -632,6 +649,19 @@ namespace _2048
 
         }
 
+        void UpdateNumbers()
+        {
+
+            for(int y = 0; y < 4; y++)
+            {
+                for(int x = 0; x < 4; x++)
+                {
+                    numbers[y, x].Text = currentNumbers[y, x] + "";
+                    numbers[y, x].Visible = currentBoxes[y, x].Visible; 
+                }
+            }
+
+        }
         
         void PrintCurrentState()
         {
