@@ -213,9 +213,16 @@ namespace _2048
                                 }
 
                                 currentNumbers[3, x] = 0;
-                                currentBoxes[3, x].Visible = false; ;
+                                currentBoxes[3, x].Visible = false;
 
                             } 
+
+                            try
+                            {
+                                int score = int.Parse(lbl_Score.Text);
+                                score += currentNumbers[y - 1, x];
+                                lbl_Score.Text = score + "";
+                            } catch(NullReferenceException) { Console.WriteLine("NullReferenceException int score"); }
 
                             Console.WriteLine("");
                             Console.WriteLine("mergea");
