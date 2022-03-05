@@ -114,12 +114,12 @@ namespace _2048
                 list4.Add(pictureBox16);
                 box_positions.Add(list4);
 
-                
+                InstantiateBoxes();
 
                 Random rnd = new Random();
                 int x_index = rnd.Next(0, 3);
                 int y_index = rnd.Next(0, 3);
-                NewBox(x_index, y_index);
+                NewBox(1, 1);
 
                 int prev_x = x_index;
                 int prev_y = y_index;
@@ -135,7 +135,7 @@ namespace _2048
                         y_index = rnd.Next(0, 3);
                     }
                 }
-                NewBox(x_index, y_index);
+                NewBox(1, 2);
 
                 PrintCurrentState();
 
@@ -159,10 +159,17 @@ namespace _2048
                             }
                             if(stepsUp > 0)
                             {
-                                int positionsUp = boxWidth * stepsUp + boxMargin * stepsUp;
-                                currentBoxes[y, x].Location = new Point(currentBoxes[y, x].Location.X, currentBoxes[y, x].Location.Y - positionsUp);
-                                currentBoxes[y - stepsUp, x] = currentBoxes[y, x];
-                                currentBoxes[y, x] = null; 
+
+                                int placeInArray = 0; 
+                                for (int i = 0; i < r.Length; i++)
+                                {
+                                    if (Math.Pow(2, i + 1) == currentNumbers[y, x])
+                                        placeInArray = i;
+                                }
+
+                                currentBoxes[y - stepsUp, x].BackColor = System.Drawing.Color.FromArgb(r[placeInArray], g[placeInArray], b[placeInArray]); 
+                                currentBoxes[y - stepsUp, x].Visible = true; 
+                                currentBoxes[y, x].Visible = false; 
 
                                 currentNumbers[y - stepsUp, x] = currentNumbers[y, x];
                                 currentNumbers[y, x] = 0;
@@ -176,7 +183,7 @@ namespace _2048
                         }
                     }
                 }
-
+                
                 for(int y = 1; y < 4; y++)
                 {
                     for(int x = 0; x < 4; x++)
@@ -187,12 +194,14 @@ namespace _2048
                             for (int i = 0; i < r.Length; i++)
                             {
                                 if (Math.Pow(2, i + 1) == currentNumbers[y, x])
-                                    placeInArray = i;
+                                    placeInArray = i + 1;
                             }
-                            currentBoxes[y, x] = null;
+
+                            currentBoxes[y, x].Visible = false;
                             currentNumbers[y, x] = 0;
 
                             currentBoxes[y - 1, x].BackColor = System.Drawing.Color.FromArgb(r[placeInArray], g[placeInArray], b[placeInArray]);
+                            currentBoxes[y - 1, x].Visible = true; 
                             currentNumbers[y - 1, x] *= 2;
 
                             if (y < 3) // flytta allt annat ner ett snäpp 
@@ -204,9 +213,9 @@ namespace _2048
                                 }
 
                                 currentNumbers[3, x] = 0;
-                                currentBoxes[3, x] = null;
+                                currentBoxes[3, x].Visible = false; ;
 
-                            }
+                            } 
 
                             Console.WriteLine("");
                             Console.WriteLine("mergea");
@@ -232,9 +241,33 @@ namespace _2048
 
         }
 
-        void NewBox(int x_index, int y_index)
+        void InstantiateBoxes()
         {
 
+            for(int i = 0; i < 4; i++)
+            {
+                for(int j = 0; j < 4; j++)
+                {
+                    PictureBox pb = new PictureBox();
+                    pb.Parent = panel1;
+                    pb.BackColor = System.Drawing.Color.FromArgb(r[0], g[0], b[0]);
+
+                    int x = startX + boxWidth * j + boxMargin * j;
+                    int y = startY + boxWidth * i + boxMargin * i;
+                    pb.SetBounds(x, y, boxWidth, boxWidth);
+
+                    pb.BringToFront();
+                    pb.Visible = false;
+
+                    currentBoxes[i, j] = pb; 
+                }
+            }
+
+        }
+
+        void NewBox(int x_index, int y_index)
+        {
+            /*
             PictureBox pb = new PictureBox();
             pb.Parent = panel1;
             pb.BackColor = System.Drawing.Color.FromArgb(r[0], g[0], b[0]);
@@ -248,6 +281,11 @@ namespace _2048
 
             currentNumbers[y_index, x_index] = 2;
             currentBoxes[y_index, x_index] = pb; 
+            */
+
+            currentBoxes[y_index, x_index].BackColor = System.Drawing.Color.FromArgb(r[0], g[0], b[0]);
+            currentNumbers[y_index, x_index] = 2;
+            currentBoxes[y_index, x_index].Visible = true; 
 
             //Label lbl = new Label();
             //lbl.Parent = panel1;
