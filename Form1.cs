@@ -16,17 +16,17 @@ namespace _2048
         readonly int boxWidth = 80, boxMargin = 10;
         readonly int startX = 10, startY = 10; 
 
+        /*
         readonly int r2 = 238, g2 = 228, b2 = 218;
         readonly int r4 = 238, g4 = 225, b4 = 201; 
         readonly int r8 = 243, g8 = 178, b8 = 122; 
-        readonly int r16 = 0, g16 = 0, b16 = 0; 
-        readonly int r32 = 0, g32 = 0, b32 = 0; 
-        readonly int r64 = 0, g64 = 0, b64 = 0;
+        */
 
         //r[0] = r2
-        readonly int[] r = { 238, 238, 243, 0, 0, 0 };
-        readonly int[] g = { 228, 225, 178, 0, 0, 0 };
-        readonly int[] b = { 218, 201, 122, 0, 0, 0 };
+        // 2-8192
+        readonly int[] r = { 238, 238, 243, 246, 247, 247, 237, 237, 237, 237, 237, 60, 60 }; 
+        readonly int[] g = { 228, 225, 178, 150, 124, 95, 208, 204, 200, 197, 194, 58, 58 };
+        readonly int[] b = { 218, 201, 122, 100, 95, 59, 115, 98, 80, 63, 46, 50, 50 };
 
         bool up = false, down = false, right = false, left = false;
         bool prevUp = false, prevDown = false, prevRight = false, prevLeft = false;
@@ -657,6 +657,16 @@ namespace _2048
                 for(int x = 0; x < 4; x++)
                 {
                     numbers[y, x].Text = currentNumbers[y, x] + "";
+
+                    if(currentNumbers[y, x] >= 8)
+                    {
+                        numbers[y, x].ForeColor = System.Drawing.Color.FromArgb(r[0], g[0], b[0]);
+                    }
+                    else
+                    {
+                        numbers[y, x].ForeColor = label1.ForeColor; 
+                    }
+
                     numbers[y, x].Visible = currentBoxes[y, x].Visible; 
                 }
             }
