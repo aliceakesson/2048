@@ -122,7 +122,7 @@ namespace _2048
                 Random rnd = new Random();
                 int x_index = rnd.Next(0, 3);
                 int y_index = rnd.Next(0, 3);
-                NewBox(1, 1);
+                NewBox(y_index, x_index);
 
                 int prev_x = x_index;
                 int prev_y = y_index;
@@ -138,7 +138,7 @@ namespace _2048
                         y_index = rnd.Next(0, 3);
                     }
                 }
-                NewBox(1, 2);
+                NewBox(y_index, x_index);
 
                 PrintCurrentState();
 
