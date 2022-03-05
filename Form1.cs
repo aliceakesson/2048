@@ -135,7 +135,7 @@ namespace _2048
                         y_index = rnd.Next(0, 3);
                     }
                 }
-                NewBox(1, 2);
+                NewBox(2, 1);
 
                 PrintCurrentState();
 
@@ -204,7 +204,7 @@ namespace _2048
                             currentBoxes[y - 1, x].Visible = true; 
                             currentNumbers[y - 1, x] *= 2;
 
-                            if (y < 3) // flytta allt annat ner ett snäpp 
+                            if (y < 3) // flytta allt annat upp ett snäpp 
                             {
                                 for (int i = y; i < 3; i++)
                                 {
@@ -234,15 +234,273 @@ namespace _2048
             }
             else if(down)
             {
-                Console.WriteLine("down");
+                //Console.WriteLine("down");
+
+                for(int y = 2; y >= 0; y--)
+                {
+                    for(int x = 0; x < 4; x++)
+                    {
+                        if(currentNumbers[y, x] > 0)
+                        {
+                            int stepsDown = 0; 
+                            for(int i = y + 1; i < 4; i++) // alla platser direkt under positionen
+                            {
+                                if (currentNumbers[i, x] == 0)
+                                    stepsDown++; 
+                            }
+                            if(stepsDown > 0)
+                            {
+
+                                int placeInArray = 0; 
+                                for (int i = 0; i < r.Length; i++)
+                                {
+                                    if (Math.Pow(2, i + 1) == currentNumbers[y, x])
+                                        placeInArray = i;
+                                }
+
+                                currentBoxes[y + stepsDown, x].BackColor = System.Drawing.Color.FromArgb(r[placeInArray], g[placeInArray], b[placeInArray]); 
+                                currentBoxes[y + stepsDown, x].Visible = true; 
+                                currentBoxes[y, x].Visible = false; 
+
+                                currentNumbers[y + stepsDown, x] = currentNumbers[y, x];
+                                currentNumbers[y, x] = 0;
+
+                                Console.WriteLine("");
+                                Console.WriteLine("flytta ned");
+                                PrintCurrentState();
+
+                            }
+                            
+                        }
+                    }
+                }
+                
+                for(int y = 2; y >= 0; y--)
+                {
+                    for(int x = 0; x < 4; x++)
+                    {
+                        if (currentNumbers[y + 1, x] == currentNumbers[y, x] && currentNumbers[y, x] != 0)
+                        {
+                            int placeInArray = 0;
+                            for (int i = 0; i < r.Length; i++)
+                            {
+                                if (Math.Pow(2, i + 1) == currentNumbers[y, x])
+                                    placeInArray = i + 1;
+                            }
+
+                            currentBoxes[y, x].Visible = false;
+                            currentNumbers[y, x] = 0;
+
+                            currentBoxes[y + 1, x].BackColor = System.Drawing.Color.FromArgb(r[placeInArray], g[placeInArray], b[placeInArray]);
+                            currentBoxes[y + 1, x].Visible = true; 
+                            currentNumbers[y + 1, x] *= 2;
+
+                            if (y > 1) // flytta allt annat ned ett snäpp 
+                            {
+                                for (int i = 1; i < y; i++)
+                                {
+                                    currentNumbers[i, x] = currentNumbers[i - 1, x];
+                                    currentBoxes[i, x] = currentBoxes[i - 1, x];
+                                }
+
+                                currentNumbers[0, x] = 0;
+                                currentBoxes[0, x].Visible = false;
+
+                            } 
+
+                            try
+                            {
+                                int score = int.Parse(lbl_Score.Text);
+                                score += currentNumbers[y + 1, x];
+                                lbl_Score.Text = score + "";
+                            } catch(NullReferenceException) { Console.WriteLine("NullReferenceException int score"); }
+
+                            Console.WriteLine("");
+                            Console.WriteLine("mergea");
+                            PrintCurrentState();
+                        }
+                    }
+                } 
             }
             else if(right)
             {
-                Console.WriteLine("right");
+                //Console.WriteLine("right");
+
+                for(int y = 0; y < 4; y++)
+                {
+                    for(int x = 2; x >= 0; x--)
+                    {
+                        if(currentNumbers[y, x] > 0)
+                        {
+                            int stepsRight = 0; 
+                            for(int i = x + 1; i < 4; i++) // alla platser direkt höger om positionen
+                            {
+                                if (currentNumbers[y, i] == 0)
+                                    stepsRight++; 
+                            }
+                            if(stepsRight > 0)
+                            {
+
+                                int placeInArray = 0; 
+                                for (int i = 0; i < r.Length; i++)
+                                {
+                                    if (Math.Pow(2, i + 1) == currentNumbers[y, x])
+                                        placeInArray = i;
+                                }
+
+                                currentBoxes[y, x + stepsRight].BackColor = System.Drawing.Color.FromArgb(r[placeInArray], g[placeInArray], b[placeInArray]); 
+                                currentBoxes[y, x + stepsRight].Visible = true; 
+                                currentBoxes[y, x].Visible = false; 
+
+                                currentNumbers[y, x + stepsRight] = currentNumbers[y, x];
+                                currentNumbers[y, x] = 0;
+
+                                Console.WriteLine("");
+                                Console.WriteLine("flytta till höger");
+                                PrintCurrentState();
+
+                            }
+                            
+                        }
+                    }
+                }
+                
+                for(int y = 0; y < 4; y++)
+                {
+                    for(int x = 2; x >= 0; x--)
+                    {
+                        if (currentNumbers[y, x + 1] == currentNumbers[y, x] && currentNumbers[y, x] != 0)
+                        {
+                            int placeInArray = 0;
+                            for (int i = 0; i < r.Length; i++)
+                            {
+                                if (Math.Pow(2, i + 1) == currentNumbers[y, x])
+                                    placeInArray = i + 1;
+                            }
+
+                            currentBoxes[y, x].Visible = false;
+                            currentNumbers[y, x] = 0;
+
+                            currentBoxes[y, x + 1].BackColor = System.Drawing.Color.FromArgb(r[placeInArray], g[placeInArray], b[placeInArray]);
+                            currentBoxes[y, x + 1].Visible = true; 
+                            currentNumbers[y, x + 1] *= 2;
+
+                            if (x > 1) // flytta allt annat ett snäpp till höger  
+                            {
+                                for (int i = 1; i < x; i++)
+                                {
+                                    currentNumbers[y, i] = currentNumbers[y, i - 1];
+                                    currentBoxes[y, i] = currentBoxes[y, i - 1];
+                                }
+
+                                currentNumbers[y, 0] = 0;
+                                currentBoxes[y, 0].Visible = false;
+
+                            } 
+
+                            try
+                            {
+                                int score = int.Parse(lbl_Score.Text);
+                                score += currentNumbers[y, x + 1];
+                                lbl_Score.Text = score + "";
+                            } catch(NullReferenceException) { Console.WriteLine("NullReferenceException int score"); }
+
+                            Console.WriteLine("");
+                            Console.WriteLine("mergea");
+                            PrintCurrentState();
+                        }
+                    }
+                } 
             }
             else if(left)
             {
-                Console.WriteLine("left");
+                //Console.WriteLine("left");
+
+                for(int y = 0; y < 4; y++)
+                {
+                    for(int x = 1; x < 4; x++)
+                    {
+                        if(currentNumbers[y, x] > 0)
+                        {
+                            int stepsLeft = 0; 
+                            for(int i = 0; i < x; i++) // alla platser direkt vänster om positionen
+                            {
+                                if (currentNumbers[y, i] == 0)
+                                    stepsLeft++; 
+                            }
+                            if(stepsLeft > 0)
+                            {
+
+                                int placeInArray = 0; 
+                                for (int i = 0; i < r.Length; i++)
+                                {
+                                    if (Math.Pow(2, i + 1) == currentNumbers[y, x])
+                                        placeInArray = i;
+                                }
+
+                                currentBoxes[y, x - stepsLeft].BackColor = System.Drawing.Color.FromArgb(r[placeInArray], g[placeInArray], b[placeInArray]); 
+                                currentBoxes[y, x - stepsLeft].Visible = true; 
+                                currentBoxes[y, x].Visible = false; 
+
+                                currentNumbers[y, x - stepsLeft] = currentNumbers[y, x];
+                                currentNumbers[y, x] = 0;
+
+                                Console.WriteLine("");
+                                Console.WriteLine("flytta till vänster");
+                                PrintCurrentState();
+
+                            }
+                            
+                        }
+                    }
+                }
+                
+                for(int y = 0; y < 4; y++)
+                {
+                    for(int x = 1; x < 4; x++)
+                    {
+                        if (currentNumbers[y, x - 1] == currentNumbers[y, x] && currentNumbers[y, x] != 0)
+                        {
+                            int placeInArray = 0;
+                            for (int i = 0; i < r.Length; i++)
+                            {
+                                if (Math.Pow(2, i + 1) == currentNumbers[y, x])
+                                    placeInArray = i + 1;
+                            }
+
+                            currentBoxes[y, x].Visible = false;
+                            currentNumbers[y, x] = 0;
+
+                            currentBoxes[y, x - 1].BackColor = System.Drawing.Color.FromArgb(r[placeInArray], g[placeInArray], b[placeInArray]);
+                            currentBoxes[y, x - 1].Visible = true; 
+                            currentNumbers[y, x - 1] *= 2;
+
+                            if (x < 3) // flytta allt annat ett snäpp till vänster  
+                            {
+                                for (int i = x; i < 3; i++)
+                                {
+                                    currentNumbers[y, i] = currentNumbers[y, i + 1];
+                                    currentBoxes[y, i] = currentBoxes[y, i + 1];
+                                }
+
+                                currentNumbers[y, 3] = 0;
+                                currentBoxes[y, 3].Visible = false;
+
+                            } 
+
+                            try
+                            {
+                                int score = int.Parse(lbl_Score.Text);
+                                score += currentNumbers[y, x - 1];
+                                lbl_Score.Text = score + "";
+                            } catch(NullReferenceException) { Console.WriteLine("NullReferenceException int score"); }
+
+                            Console.WriteLine("");
+                            Console.WriteLine("mergea");
+                            PrintCurrentState();
+                        }
+                    }
+                } 
             }
 
 
