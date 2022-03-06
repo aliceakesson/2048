@@ -176,9 +176,9 @@ namespace _2048
                                 currentBoxes[y - stepsUp, x].Visible = true; 
                                 currentBoxes[y, x].Visible = false; 
 
-                                currentNumbers[y - stepsUp, x] = currentNumbers[y, x];
+                                int n = currentNumbers[y, x];
+                                currentNumbers[y - stepsUp, x] = n;
                                 currentNumbers[y, x] = 0;
-
 
                                 Console.WriteLine("");
                                 Console.WriteLine("flytta upp");
@@ -204,12 +204,11 @@ namespace _2048
                             }
 
                             currentBoxes[y, x].Visible = false;
-                            currentNumbers[y, x] = 0;
-
                             currentBoxes[y - 1, x].BackColor = System.Drawing.Color.FromArgb(r[placeInArray], g[placeInArray], b[placeInArray]);
                             currentBoxes[y - 1, x].Visible = true; 
                             
-                            currentNumbers[y - 1, x] *= 2;
+                            currentNumbers[y - 1, x] = currentNumbers[y, x] * 2;
+                            currentNumbers[y, x] = 0;
 
                             if (y < 3) // flytta allt annat upp ett snäpp 
                             {
@@ -271,7 +270,8 @@ namespace _2048
                                 currentBoxes[y + stepsDown, x].Visible = true; 
                                 currentBoxes[y, x].Visible = false; 
 
-                                currentNumbers[y + stepsDown, x] = currentNumbers[y, x];
+                                int n = currentNumbers[y, x];
+                                currentNumbers[y + stepsDown, x] = n;
                                 currentNumbers[y, x] = 0;
 
                                 Console.WriteLine("");
@@ -298,11 +298,11 @@ namespace _2048
                             }
 
                             currentBoxes[y, x].Visible = false;
-                            currentNumbers[y, x] = 0;
-
                             currentBoxes[y + 1, x].BackColor = System.Drawing.Color.FromArgb(r[placeInArray], g[placeInArray], b[placeInArray]);
                             currentBoxes[y + 1, x].Visible = true; 
-                            currentNumbers[y + 1, x] *= 2;
+
+                            currentNumbers[y + 1, x] = currentNumbers[y, x] * 2;
+                            currentNumbers[y, x] = 0;
 
                             if (y > 1) // flytta allt annat ned ett snäpp 
                             {
@@ -363,7 +363,8 @@ namespace _2048
                                 currentBoxes[y, x + stepsRight].Visible = true; 
                                 currentBoxes[y, x].Visible = false; 
 
-                                currentNumbers[y, x + stepsRight] = currentNumbers[y, x];
+                                int n = currentNumbers[y, x];
+                                currentNumbers[y, x + stepsRight] = n;
                                 currentNumbers[y, x] = 0;
 
                                 Console.WriteLine("");
@@ -390,11 +391,11 @@ namespace _2048
                             }
 
                             currentBoxes[y, x].Visible = false;
-                            currentNumbers[y, x] = 0;
-
                             currentBoxes[y, x + 1].BackColor = System.Drawing.Color.FromArgb(r[placeInArray], g[placeInArray], b[placeInArray]);
                             currentBoxes[y, x + 1].Visible = true; 
-                            currentNumbers[y, x + 1] *= 2;
+
+                            currentNumbers[y, x + 1] = currentNumbers[y, x] * 2;
+                            currentNumbers[y, x] = 0;
 
                             if (x > 1) // flytta allt annat ett snäpp till höger  
                             {
@@ -455,7 +456,8 @@ namespace _2048
                                 currentBoxes[y, x - stepsLeft].Visible = true; 
                                 currentBoxes[y, x].Visible = false; 
 
-                                currentNumbers[y, x - stepsLeft] = currentNumbers[y, x];
+                                int n = currentNumbers[y, x];
+                                currentNumbers[y, x - stepsLeft] = n;
                                 currentNumbers[y, x] = 0;
 
                                 Console.WriteLine("");
@@ -482,11 +484,11 @@ namespace _2048
                             }
 
                             currentBoxes[y, x].Visible = false;
-                            currentNumbers[y, x] = 0;
-
                             currentBoxes[y, x - 1].BackColor = System.Drawing.Color.FromArgb(r[placeInArray], g[placeInArray], b[placeInArray]);
                             currentBoxes[y, x - 1].Visible = true; 
-                            currentNumbers[y, x - 1] *= 2;
+
+                            currentNumbers[y, x - 1] = currentNumbers[y, x] * 2;
+                            currentNumbers[y, x] = 0;
 
                             if (x < 3) // flytta allt annat ett snäpp till vänster  
                             {
