@@ -51,6 +51,11 @@ namespace _2048
             this.label2 = new System.Windows.Forms.Label();
             this.lbl_Score = new System.Windows.Forms.Label();
             this.gameTimer = new System.Windows.Forms.Timer(this.components);
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.lbl_BestScore = new System.Windows.Forms.Label();
+            this.btn_NewGame = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox16)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox15)).BeginInit();
@@ -68,6 +73,8 @@ namespace _2048
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.panel2.SuspendLayout();
+            this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -253,22 +260,26 @@ namespace _2048
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(348, 50);
+            this.label2.Font = new System.Drawing.Font("MS PGothic", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(216)))), ((int)(((byte)(199)))));
+            this.label2.Location = new System.Drawing.Point(21, 10);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(85, 31);
+            this.label2.Size = new System.Drawing.Size(45, 11);
             this.label2.TabIndex = 17;
-            this.label2.Text = "Score";
+            this.label2.Text = "SCORE";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // lbl_Score
             // 
-            this.lbl_Score.AutoSize = true;
-            this.lbl_Score.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_Score.Location = new System.Drawing.Point(382, 106);
+            this.lbl_Score.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_Score.ForeColor = System.Drawing.Color.White;
+            this.lbl_Score.Location = new System.Drawing.Point(3, 24);
             this.lbl_Score.Name = "lbl_Score";
-            this.lbl_Score.Size = new System.Drawing.Size(29, 31);
+            this.lbl_Score.Size = new System.Drawing.Size(80, 25);
             this.lbl_Score.TabIndex = 18;
             this.lbl_Score.Text = "0";
+            this.lbl_Score.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lbl_Score.Click += new System.EventHandler(this.lbl_Score_Click);
             // 
             // gameTimer
@@ -276,18 +287,81 @@ namespace _2048
             this.gameTimer.Enabled = true;
             this.gameTimer.Tick += new System.EventHandler(this.gameTimer_Tick);
             // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(173)))), ((int)(((byte)(160)))));
+            this.panel2.Controls.Add(this.label2);
+            this.panel2.Controls.Add(this.lbl_Score);
+            this.panel2.Location = new System.Drawing.Point(265, 56);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(86, 51);
+            this.panel2.TabIndex = 19;
+            // 
+            // panel3
+            // 
+            this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(173)))), ((int)(((byte)(160)))));
+            this.panel3.Controls.Add(this.label3);
+            this.panel3.Controls.Add(this.lbl_BestScore);
+            this.panel3.Location = new System.Drawing.Point(367, 56);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(86, 51);
+            this.panel3.TabIndex = 20;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("MS PGothic", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(216)))), ((int)(((byte)(199)))));
+            this.label3.Location = new System.Drawing.Point(26, 10);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(35, 11);
+            this.label3.TabIndex = 17;
+            this.label3.Text = "BEST";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label3.Click += new System.EventHandler(this.label3_Click);
+            // 
+            // lbl_BestScore
+            // 
+            this.lbl_BestScore.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_BestScore.ForeColor = System.Drawing.Color.White;
+            this.lbl_BestScore.Location = new System.Drawing.Point(3, 24);
+            this.lbl_BestScore.Name = "lbl_BestScore";
+            this.lbl_BestScore.Size = new System.Drawing.Size(80, 25);
+            this.lbl_BestScore.TabIndex = 18;
+            this.lbl_BestScore.Text = "0";
+            this.lbl_BestScore.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // btn_NewGame
+            // 
+            this.btn_NewGame.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(143)))), ((int)(((byte)(122)))), ((int)(((byte)(102)))));
+            this.btn_NewGame.CausesValidation = false;
+            this.btn_NewGame.FlatAppearance.BorderSize = 0;
+            this.btn_NewGame.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_NewGame.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(228)))), ((int)(((byte)(218)))));
+            this.btn_NewGame.Location = new System.Drawing.Point(348, 133);
+            this.btn_NewGame.Name = "btn_NewGame";
+            this.btn_NewGame.Size = new System.Drawing.Size(105, 39);
+            this.btn_NewGame.TabIndex = 17;
+            this.btn_NewGame.Text = "New Game";
+            this.btn_NewGame.UseVisualStyleBackColor = false;
+            this.btn_NewGame.Click += new System.EventHandler(this.btn_NewGame_Click);
+            this.btn_NewGame.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.btn_PreviewKeyDown);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(248)))), ((int)(((byte)(239)))));
             this.ClientSize = new System.Drawing.Size(540, 692);
-            this.Controls.Add(this.lbl_Score);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.btn_NewGame);
+            this.Controls.Add(this.panel3);
+            this.Controls.Add(this.panel2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.panel1);
+            this.KeyPreview = true;
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.KeyIsDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.KeyIsUp);
             this.panel1.ResumeLayout(false);
@@ -307,6 +381,10 @@ namespace _2048
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -335,6 +413,11 @@ namespace _2048
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lbl_Score;
         private System.Windows.Forms.Timer gameTimer;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label lbl_BestScore;
+        private System.Windows.Forms.Button btn_NewGame;
     }
 }
 

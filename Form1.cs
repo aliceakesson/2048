@@ -41,15 +41,92 @@ namespace _2048
                                   { 0, 0, 0, 0 } };
         Label[,] numbers = new Label[4, 4];
 
+
         public Form1()
         {
             InitializeComponent();
         }
 
+        private void KeyIsDown(object sender, KeyEventArgs e)
+        {
+
+            if (e.KeyCode == Keys.Up)
+            {
+                up = true;
+            }
+            if (e.KeyCode == Keys.Down)
+            {
+                down = true;
+            }
+            if (e.KeyCode == Keys.Right)
+            {
+                right = true;
+            }
+            if (e.KeyCode == Keys.Left)
+            {
+                left = true;
+            }
+
+        }
+        private void KeyIsUp(object sender, KeyEventArgs e)
+        {
+
+            if (e.KeyCode == Keys.Up)
+            {
+                up = false;
+            }
+            if (e.KeyCode == Keys.Down)
+            {
+                down = false;
+            }
+            if (e.KeyCode == Keys.Right)
+            {
+                right = false;
+            }
+            if (e.KeyCode == Keys.Left)
+            {
+                left = false;
+            }
+
+        }
+
+       
         private void pictureBox1_Click(object sender, EventArgs e)
         {
 
         }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        // this function is taken from the following link
+        // https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.control.previewkeydown?view=windowsdesktop-6.0
+        private void btn_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Down:
+                case Keys.Up:
+                case Keys.Right:
+                case Keys.Left: 
+                    e.IsInputKey = true;
+                    break;
+            }
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        
 
         //private void KeyIsPressed(object sender, KeyPressEventArgs e)
         //{
@@ -85,6 +162,9 @@ namespace _2048
 
             if(sequenceCount == 0) // vid start
             {
+
+                btn_NewGame.Focus();
+
                 sequenceCount++;
 
                 Console.WriteLine("start");
@@ -179,10 +259,10 @@ namespace _2048
                                 int n = currentNumbers[y, x];
                                 currentNumbers[y - stepsUp, x] = n;
                                 currentNumbers[y, x] = 0;
-
+                                
                                 Console.WriteLine("");
                                 Console.WriteLine("flytta upp");
-                                PrintCurrentState();
+                                //PrintCurrentState();
 
                             }
                             
@@ -218,7 +298,8 @@ namespace _2048
                                 for (int i = y; i < 3; i++)
                                 {
                                     currentNumbers[i, x] = currentNumbers[i + 1, x];
-                                    currentBoxes[i, x] = currentBoxes[i + 1, x];
+                                    currentBoxes[i, x].Visible = currentBoxes[i + 1, x].Visible;
+                                    currentBoxes[i, x].BackColor = currentBoxes[i + 1, x].BackColor;
                                 }
 
                                 currentNumbers[3, x] = 0;
@@ -231,11 +312,17 @@ namespace _2048
                                 int score = int.Parse(lbl_Score.Text);
                                 score += currentNumbers[y - 1, x];
                                 lbl_Score.Text = score + "";
+
+                                int bestScore = int.Parse(lbl_BestScore.Text);
+                                if(score > bestScore)
+                                {
+                                    lbl_BestScore.Text = score + "";
+                                }
                             } catch(NullReferenceException) { Console.WriteLine("NullReferenceException int score"); }
 
                             Console.WriteLine("");
                             Console.WriteLine("mergea");
-                            PrintCurrentState();
+                            //PrintCurrentState();
                         }
                     }
                 }
@@ -279,14 +366,14 @@ namespace _2048
 
                                 Console.WriteLine("");
                                 Console.WriteLine("flytta ned");
-                                PrintCurrentState();
+                                //PrintCurrentState();
 
                             }
                             
                         }
                     }
                 }
-                /*
+                
                 for(int y = 2; y >= 0; y--)
                 {
                     for(int x = 0; x < 4; x++)
@@ -302,9 +389,10 @@ namespace _2048
 
                             currentBoxes[y, x].Visible = false;
                             currentBoxes[y + 1, x].BackColor = System.Drawing.Color.FromArgb(r[placeInArray], g[placeInArray], b[placeInArray]);
-                            currentBoxes[y + 1, x].Visible = true; 
+                            currentBoxes[y + 1, x].Visible = true;
 
-                            currentNumbers[y + 1, x] = currentNumbers[y, x] * 2;
+                            int n = currentNumbers[y, x]; 
+                            currentNumbers[y + 1, x] = n * 2;
                             currentNumbers[y, x] = 0;
 
                             if (y > 1) // flytta allt annat ned ett snäpp 
@@ -325,6 +413,12 @@ namespace _2048
                                 int score = int.Parse(lbl_Score.Text);
                                 score += currentNumbers[y + 1, x];
                                 lbl_Score.Text = score + "";
+
+                                int bestScore = int.Parse(lbl_BestScore.Text);
+                                if (score > bestScore)
+                                {
+                                    lbl_BestScore.Text = score + "";
+                                }
                             } catch(NullReferenceException) { Console.WriteLine("NullReferenceException int score"); }
 
                             Console.WriteLine("");
@@ -333,7 +427,7 @@ namespace _2048
                         }
                     }
                 } 
-                */
+                
             }
             else if(right && !prevRight)
             {
@@ -373,14 +467,14 @@ namespace _2048
 
                                 Console.WriteLine("");
                                 Console.WriteLine("flytta till höger");
-                                PrintCurrentState();
+                                //PrintCurrentState();
 
                             }
                             
                         }
                     }
                 }
-                /*
+                
                 for(int y = 0; y < 4; y++)
                 {
                     for(int x = 2; x >= 0; x--)
@@ -396,9 +490,10 @@ namespace _2048
 
                             currentBoxes[y, x].Visible = false;
                             currentBoxes[y, x + 1].BackColor = System.Drawing.Color.FromArgb(r[placeInArray], g[placeInArray], b[placeInArray]);
-                            currentBoxes[y, x + 1].Visible = true; 
+                            currentBoxes[y, x + 1].Visible = true;
 
-                            currentNumbers[y, x + 1] = currentNumbers[y, x] * 2;
+                            int n = currentNumbers[y, x];
+                            currentNumbers[y, x + 1] = n * 2;
                             currentNumbers[y, x] = 0;
 
                             if (x > 1) // flytta allt annat ett snäpp till höger  
@@ -419,6 +514,12 @@ namespace _2048
                                 int score = int.Parse(lbl_Score.Text);
                                 score += currentNumbers[y, x + 1];
                                 lbl_Score.Text = score + "";
+
+                                int bestScore = int.Parse(lbl_BestScore.Text);
+                                if (score > bestScore)
+                                {
+                                    lbl_BestScore.Text = score + "";
+                                }
                             } catch(NullReferenceException) { Console.WriteLine("NullReferenceException int score"); }
 
                             Console.WriteLine("");
@@ -427,7 +528,8 @@ namespace _2048
                         }
                     }
                 } 
-                */
+                
+
             }
             else if(left && !prevLeft)
             {
@@ -467,14 +569,15 @@ namespace _2048
 
                                 Console.WriteLine("");
                                 Console.WriteLine("flytta till vänster");
-                                PrintCurrentState();
+                                //PrintCurrentState();
 
                             }
                             
                         }
                     }
+                    
                 }
-                /*
+                
                 for(int y = 0; y < 4; y++)
                 {
                     for(int x = 1; x < 4; x++)
@@ -490,9 +593,10 @@ namespace _2048
 
                             currentBoxes[y, x].Visible = false;
                             currentBoxes[y, x - 1].BackColor = System.Drawing.Color.FromArgb(r[placeInArray], g[placeInArray], b[placeInArray]);
-                            currentBoxes[y, x - 1].Visible = true; 
+                            currentBoxes[y, x - 1].Visible = true;
 
-                            currentNumbers[y, x - 1] = currentNumbers[y, x] * 2;
+                            int n = currentNumbers[y, x];
+                            currentNumbers[y, x - 1] = n * 2;
                             currentNumbers[y, x] = 0;
 
                             if (x < 3) // flytta allt annat ett snäpp till vänster  
@@ -513,6 +617,12 @@ namespace _2048
                                 int score = int.Parse(lbl_Score.Text);
                                 score += currentNumbers[y, x - 1];
                                 lbl_Score.Text = score + "";
+
+                                int bestScore = int.Parse(lbl_BestScore.Text);
+                                if (score > bestScore)
+                                {
+                                    lbl_BestScore.Text = score + "";
+                                }
                             } catch(NullReferenceException) { Console.WriteLine("NullReferenceException int score"); }
 
                             Console.WriteLine("");
@@ -521,12 +631,14 @@ namespace _2048
                         }
                     }
                 } 
-                */
+                
+                
             }
             
             if(newPress) //spawna ny box vid varje move 
             {
                 UpdateNumbers();
+                PrintCurrentState();
 
                 bool boardHasEmptySpot = false; 
                 for(int y = 0; y < 4; y++)
@@ -547,26 +659,36 @@ namespace _2048
                     int y_index = 0, x_index = 0; 
 
                     Random rnd = new Random();
-                    y_index = rnd.Next(0, 3);
-                    x_index = rnd.Next(0, 3);
+                    y_index = rnd.Next(0, 4);
+                    x_index = rnd.Next(0, 4);
 
-                    if(currentNumbers[y_index, x_index] != 0)
+                    int k = 0;
+                    int safetyMargin = 10000000; //in case the while-loop never stops 
+
+                    if (currentBoxes[y_index, x_index].Visible)
                     {
-
-                        int safetyMargin = 100; //in case the while-loop never stops 
-                        int k = 0; 
-                        while(currentNumbers[y_index, x_index] != 0 && k < safetyMargin)
+                        
+                        while(currentBoxes[y_index, x_index].Visible && k < safetyMargin)
                         {
-                            y_index = rnd.Next(0, 3);
-                            x_index = rnd.Next(0, 3);
+                            y_index = rnd.Next(0, 4);
+                            x_index = rnd.Next(0, 4);
                             k++; 
                         }
 
+                        Console.WriteLine("k: " + k);
+                        
                     }
 
-                    NewBox(x_index, y_index);
+                    if(k < safetyMargin)
+                    {
+                        Console.WriteLine("y: " + y_index + ", x: " + x_index);
+                        NewBox(y_index, x_index);
+                    }
 
                 }
+
+                Console.WriteLine("");
+                PrintCurrentState();
 
             }
 
@@ -612,8 +734,9 @@ namespace _2048
 
         }
 
-        void NewBox(int x_index, int y_index)
+        void NewBox(int y_index, int x_index)
         {
+            Console.WriteLine("y: " + y_index + ", x: " + x_index);
             /*
             PictureBox pb = new PictureBox();
             pb.Parent = panel1;
@@ -631,17 +754,18 @@ namespace _2048
             */
 
             int placeInArray = 0; 
+
             Random rnd = new Random();
             float randomFloat = (float)rnd.NextDouble();
 
             if(randomFloat <= 0.1f) 
-                placeInArray = 1; 
-            
+                placeInArray = 1;
+            Console.WriteLine("placeInArray: " + placeInArray);
             currentBoxes[y_index, x_index].BackColor = System.Drawing.Color.FromArgb(r[placeInArray], g[placeInArray], b[placeInArray]);
             currentNumbers[y_index, x_index] = (int)Math.Pow(2, placeInArray + 1);
             currentBoxes[y_index, x_index].Visible = true; 
 
-            numbers[y_index, x_index].Text = Math.Pow(2, placeInArray + 1) + "";
+            numbers[y_index, x_index].Text = (int)Math.Pow(2, placeInArray + 1) + "";
             numbers[y_index, x_index].Visible = true; 
 
             //Label lbl = new Label();
@@ -675,6 +799,15 @@ namespace _2048
                         numbers[y, x].ForeColor = label1.ForeColor; 
                     }
 
+                    if(currentNumbers[y, x] >= 10)
+                    {
+                        numbers[y, x].Font = new Font("Arial", 25, FontStyle.Bold);
+                    }
+                    else
+                    {
+                        numbers[y, x].Font = new Font("Arial", 30, FontStyle.Bold);
+                    }
+
                     numbers[y, x].Visible = currentBoxes[y, x].Visible; 
                 }
             }
@@ -690,50 +823,54 @@ namespace _2048
             Console.WriteLine(currentNumbers[3, 0] + " " + currentNumbers[3, 1] + " " + currentNumbers[3, 2] + " " + currentNumbers[3, 3]);
         }
         
-        private void KeyIsDown(object sender, KeyEventArgs e)
+        
+        private void btn_NewGame_Click(object sender, EventArgs e)
         {
-
-            if(e.KeyCode == Keys.Up)
-            {
-                up = true;
-            }
-            if (e.KeyCode == Keys.Down)
-            {
-                down = true;
-            }
-            if (e.KeyCode == Keys.Right)
-            {
-                right = true;
-            }
-            if (e.KeyCode == Keys.Left)
-            {
-                left = true;
-            }
-
-        }
-        private void KeyIsUp(object sender, KeyEventArgs e)
-        {
-
-            if(e.KeyCode == Keys.Up)
-            {
-                up = false; 
-            }
-            if (e.KeyCode == Keys.Down)
-            {
-                down = false;
-            }
-            if (e.KeyCode == Keys.Right)
-            {
-                right = false;
-            }
-            if (e.KeyCode == Keys.Left)
-            {
-                left = false;
-            }
+            Console.WriteLine("New Game");
+            ResetGame();
 
         }
 
-         
+        void ResetGame()
+        {
+            for(int y = 0; y < 4; y++)
+            {
+                for(int x = 0; x < 4; x++)
+                {
+                    currentBoxes[y, x].Visible = false;
+                    currentNumbers[y, x] = 0;
+                    numbers[y, x].Visible = false; 
+                }
+            }
+
+            lbl_Score.Text = "0";
+
+            int y_index = 0, x_index = 0; 
+            Random rnd = new Random();
+            y_index = rnd.Next(0, 4);
+            x_index = rnd.Next(0, 4);
+
+            NewBox(y_index, x_index);
+
+            int prev_x = x_index;
+            int prev_y = y_index;
+
+            x_index = rnd.Next(0, 3);
+            y_index = rnd.Next(0, 3);
+
+            if (x_index == prev_x && y_index == prev_y)
+            {
+                while (x_index == prev_x && y_index == prev_y)
+                {
+                    x_index = rnd.Next(0, 3);
+                    y_index = rnd.Next(0, 3);
+                }
+            }
+            NewBox(y_index, x_index);
+
+            PrintCurrentState();
+
+        }
 
     }
 }
