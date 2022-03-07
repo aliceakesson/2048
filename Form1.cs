@@ -799,7 +799,15 @@ namespace _2048
                         numbers[y, x].ForeColor = label1.ForeColor; 
                     }
 
-                    if(currentNumbers[y, x] >= 10)
+                    if (currentNumbers[y, x] >= 1000)
+                    {
+                        numbers[y, x].Font = new Font("Arial", 15, FontStyle.Bold);
+                    }
+                    else if (currentNumbers[y, x] >= 100)
+                    {
+                        numbers[y, x].Font = new Font("Arial", 20, FontStyle.Bold);
+                    }
+                    else if(currentNumbers[y, x] >= 10)
                     {
                         numbers[y, x].Font = new Font("Arial", 25, FontStyle.Bold);
                     }
