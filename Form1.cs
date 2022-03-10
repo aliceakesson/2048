@@ -202,7 +202,7 @@ namespace _2048
                 Random rnd = new Random();
                 int x_index = rnd.Next(0, 3);
                 int y_index = rnd.Next(0, 3);
-                NewBox(y_index, x_index);
+                //NewBox(y_index, x_index);
 
                 int prev_x = x_index;
                 int prev_y = y_index;
@@ -218,7 +218,7 @@ namespace _2048
                         y_index = rnd.Next(0, 3);
                     }
                 }
-                NewBox(y_index, x_index);
+                //NewBox(y_index, x_index);
 
                 PrintCurrentState();
 
@@ -634,7 +634,7 @@ namespace _2048
                 
                 
             }
-            
+
             if(newPress) //spawna ny box vid varje move 
             {
                 UpdateNumbers();
@@ -815,6 +815,22 @@ namespace _2048
                     {
                         numbers[y, x].Font = new Font("Arial", 30, FontStyle.Bold);
                     }
+
+                    if(currentNumbers[y, x] == 0)
+                    {
+                        currentBoxes[y, x].Visible = false; 
+                    }
+                    else {
+                        int placeInArray = 0;
+                        for (int i = 0; i < r.Length; i++)
+                        {
+                            if (Math.Pow(2, i + 1) == currentNumbers[y, x])
+                                placeInArray = i;
+                        }
+                        currentBoxes[y, x].BackColor = System.Drawing.Color.FromArgb(r[placeInArray], g[placeInArray], b[placeInArray]);
+                        currentBoxes[y, x].Visible = true; 
+                    }
+
 
                     numbers[y, x].Visible = currentBoxes[y, x].Visible; 
                 }
