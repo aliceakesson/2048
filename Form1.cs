@@ -797,7 +797,9 @@ namespace _2048
 
             numbers[y_index, x_index].Text = (int)Math.Pow(2, placeInArray + 1) + "";
             numbers[y_index, x_index].ForeColor = label1.ForeColor; 
-            numbers[y_index, x_index].Visible = true; 
+            numbers[y_index, x_index].Visible = true;
+
+            UpdateNumbers();
 
             //Label lbl = new Label();
             //lbl.Parent = panel1;
@@ -830,24 +832,39 @@ namespace _2048
                         numbers[y, x].ForeColor = label1.ForeColor; 
                     }
 
+                    int marginX = 22; 
+                    int marginY = 22;
+                    int widthX = 50; 
+                    int widthY = 50; 
+
                     if (currentNumbers[y, x] >= 1000)
                     {
                         numbers[y, x].Font = new Font("Arial", 15, FontStyle.Bold);
+                        widthX = 58; 
+                        marginX = 28;
+                        marginY = 16; 
                     }
                     else if (currentNumbers[y, x] >= 100)
                     {
-                        numbers[y, x].Font = new Font("Arial", 20, FontStyle.Bold);
+                        numbers[y, x].Font = new Font("Arial", 19, FontStyle.Bold);
+                        widthX = 56;
+                        marginY = 20; 
+                        marginX = 28; 
                     }
                     else if(currentNumbers[y, x] >= 10)
                     {
-                        numbers[y, x].Font = new Font("Arial", 25, FontStyle.Bold);
+                        numbers[y, x].Font = new Font("Arial", 23, FontStyle.Bold);
+                        marginX = 24; 
+                        marginY = 20; 
                     }
                     else
                     {
                         numbers[y, x].Font = new Font("Arial", 30, FontStyle.Bold);
                     }
 
-                    if(currentNumbers[y, x] == 0)
+                    numbers[y, x].SetBounds(boxWidth / 2 - marginX, boxWidth / 2 - marginY, widthX, widthY);
+
+                    if (currentNumbers[y, x] == 0)
                     {
                         currentBoxes[y, x].Visible = false; 
                     }
