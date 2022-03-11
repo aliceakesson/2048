@@ -126,7 +126,12 @@ namespace _2048
 
         }
 
-        
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
 
         //private void KeyIsPressed(object sender, KeyPressEventArgs e)
         //{
@@ -202,7 +207,7 @@ namespace _2048
                 Random rnd = new Random();
                 int x_index = rnd.Next(0, 3);
                 int y_index = rnd.Next(0, 3);
-                //NewBox(y_index, x_index);
+                NewBox(y_index, x_index);
 
                 int prev_x = x_index;
                 int prev_y = y_index;
@@ -218,12 +223,12 @@ namespace _2048
                         y_index = rnd.Next(0, 3);
                     }
                 }
-                //NewBox(y_index, x_index);
+                NewBox(y_index, x_index);
 
                 PrintCurrentState();
 
             }
-
+            
             if(up && !prevUp)
             {
                 //Console.WriteLine("up");
@@ -280,7 +285,7 @@ namespace _2048
                             for (int i = 0; i < r.Length; i++)
                             {
                                 if ((int)Math.Pow(2, i + 1) == currentNumbers[y, x])
-                                    placeInArray = i + 1;
+                                    placeInArray = i + 1; 
                             }
 
                             currentBoxes[y, x].Visible = false;
@@ -291,13 +296,18 @@ namespace _2048
                             currentNumbers[y - 1, x] = n * 2;
                             currentNumbers[y, x] = 0;
 
+                            //numbers[y, x].Visible = false;
+                            //numbers[y - 1, x].Visible = true;
+                            //numbers[y - 1, x].Text = currentNumbers[y - 1, x] + "";
+
                             UpdateNumbers();
                             
                             if (y < 3) // flytta allt annat upp ett snäpp 
                             {
                                 for (int i = y; i < 3; i++)
                                 {
-                                    currentNumbers[i, x] = currentNumbers[i + 1, x];
+                                    int k = currentNumbers[i + 1, x]; 
+                                    currentNumbers[i, x] = k;
                                     currentBoxes[i, x].Visible = currentBoxes[i + 1, x].Visible;
                                     currentBoxes[i, x].BackColor = currentBoxes[i + 1, x].BackColor;
                                 }
@@ -305,8 +315,10 @@ namespace _2048
                                 currentNumbers[3, x] = 0;
                                 currentBoxes[3, x].Visible = false;
 
-                            } 
-                            
+                            }
+
+                            UpdateNumbers();
+
                             try
                             {
                                 int score = int.Parse(lbl_Score.Text);
@@ -328,37 +340,37 @@ namespace _2048
                 }
                 
             }
-            else if(down && !prevDown)
+            else if (down && !prevDown)
             {
                 //Console.WriteLine("down");
 
-                newPress = true; 
+                newPress = true;
 
-                for(int y = 2; y >= 0; y--)
+                for (int y = 2; y >= 0; y--)
                 {
-                    for(int x = 0; x < 4; x++)
+                    for (int x = 0; x < 4; x++)
                     {
-                        if(currentNumbers[y, x] > 0)
+                        if (currentNumbers[y, x] > 0)
                         {
-                            int stepsDown = 0; 
-                            for(int i = y + 1; i < 4; i++) // alla platser direkt under positionen
+                            int stepsDown = 0;
+                            for (int i = y + 1; i < 4; i++) // alla platser direkt under positionen
                             {
                                 if (currentNumbers[i, x] == 0)
-                                    stepsDown++; 
+                                    stepsDown++;
                             }
-                            if(stepsDown > 0)
+                            if (stepsDown > 0)
                             {
 
-                                int placeInArray = 0; 
+                                int placeInArray = 0;
                                 for (int i = 0; i < r.Length; i++)
                                 {
                                     if (Math.Pow(2, i + 1) == currentNumbers[y, x])
                                         placeInArray = i;
                                 }
 
-                                currentBoxes[y + stepsDown, x].BackColor = System.Drawing.Color.FromArgb(r[placeInArray], g[placeInArray], b[placeInArray]); 
-                                currentBoxes[y + stepsDown, x].Visible = true; 
-                                currentBoxes[y, x].Visible = false; 
+                                currentBoxes[y + stepsDown, x].BackColor = System.Drawing.Color.FromArgb(r[placeInArray], g[placeInArray], b[placeInArray]);
+                                currentBoxes[y + stepsDown, x].Visible = true;
+                                currentBoxes[y, x].Visible = false;
 
                                 int n = currentNumbers[y, x];
                                 currentNumbers[y + stepsDown, x] = n;
@@ -369,14 +381,14 @@ namespace _2048
                                 //PrintCurrentState();
 
                             }
-                            
+
                         }
                     }
                 }
-                
-                for(int y = 2; y >= 0; y--)
+
+                for (int y = 2; y >= 0; y--)
                 {
-                    for(int x = 0; x < 4; x++)
+                    for (int x = 0; x < 4; x++)
                     {
                         if (currentNumbers[y + 1, x] == currentNumbers[y, x] && currentNumbers[y, x] != 0)
                         {
@@ -391,22 +403,28 @@ namespace _2048
                             currentBoxes[y + 1, x].BackColor = System.Drawing.Color.FromArgb(r[placeInArray], g[placeInArray], b[placeInArray]);
                             currentBoxes[y + 1, x].Visible = true;
 
-                            int n = currentNumbers[y, x]; 
+                            int n = currentNumbers[y, x];
                             currentNumbers[y + 1, x] = n * 2;
                             currentNumbers[y, x] = 0;
+
+                            UpdateNumbers();
 
                             if (y > 1) // flytta allt annat ned ett snäpp 
                             {
                                 for (int i = 1; i < y; i++)
                                 {
-                                    currentNumbers[i, x] = currentNumbers[i - 1, x];
-                                    currentBoxes[i, x] = currentBoxes[i - 1, x];
+                                    int k = currentNumbers[i - 1, x];
+                                    currentNumbers[i, x] = k;
+                                    currentBoxes[i, x].Visible = currentBoxes[i - 1, x].Visible;
+                                    currentBoxes[i, x].BackColor = currentBoxes[i - 1, x].BackColor;
                                 }
 
                                 currentNumbers[0, x] = 0;
                                 currentBoxes[0, x].Visible = false;
 
-                            } 
+                            }
+
+                            UpdateNumbers();
 
                             try
                             {
@@ -419,47 +437,48 @@ namespace _2048
                                 {
                                     lbl_BestScore.Text = score + "";
                                 }
-                            } catch(NullReferenceException) { Console.WriteLine("NullReferenceException int score"); }
+                            }
+                            catch (NullReferenceException) { Console.WriteLine("NullReferenceException int score"); }
 
                             Console.WriteLine("");
                             Console.WriteLine("mergea");
                             PrintCurrentState();
                         }
                     }
-                } 
-                
+                }
+
             }
-            else if(right && !prevRight)
+            else if (right && !prevRight)
             {
                 //Console.WriteLine("right");
 
-                newPress = true; 
+                newPress = true;
 
-                for(int y = 0; y < 4; y++)
+                for (int y = 0; y < 4; y++)
                 {
-                    for(int x = 2; x >= 0; x--)
+                    for (int x = 2; x >= 0; x--)
                     {
-                        if(currentNumbers[y, x] > 0)
+                        if (currentNumbers[y, x] > 0)
                         {
-                            int stepsRight = 0; 
-                            for(int i = x + 1; i < 4; i++) // alla platser direkt höger om positionen
+                            int stepsRight = 0;
+                            for (int i = x + 1; i < 4; i++) // alla platser direkt höger om positionen
                             {
                                 if (currentNumbers[y, i] == 0)
-                                    stepsRight++; 
+                                    stepsRight++;
                             }
-                            if(stepsRight > 0)
+                            if (stepsRight > 0)
                             {
 
-                                int placeInArray = 0; 
+                                int placeInArray = 0;
                                 for (int i = 0; i < r.Length; i++)
                                 {
                                     if (Math.Pow(2, i + 1) == currentNumbers[y, x])
                                         placeInArray = i;
                                 }
 
-                                currentBoxes[y, x + stepsRight].BackColor = System.Drawing.Color.FromArgb(r[placeInArray], g[placeInArray], b[placeInArray]); 
-                                currentBoxes[y, x + stepsRight].Visible = true; 
-                                currentBoxes[y, x].Visible = false; 
+                                currentBoxes[y, x + stepsRight].BackColor = System.Drawing.Color.FromArgb(r[placeInArray], g[placeInArray], b[placeInArray]);
+                                currentBoxes[y, x + stepsRight].Visible = true;
+                                currentBoxes[y, x].Visible = false;
 
                                 int n = currentNumbers[y, x];
                                 currentNumbers[y, x + stepsRight] = n;
@@ -470,14 +489,14 @@ namespace _2048
                                 //PrintCurrentState();
 
                             }
-                            
+
                         }
                     }
                 }
-                
-                for(int y = 0; y < 4; y++)
+
+                for (int y = 0; y < 4; y++)
                 {
-                    for(int x = 2; x >= 0; x--)
+                    for (int x = 2; x >= 0; x--)
                     {
                         if (currentNumbers[y, x + 1] == currentNumbers[y, x] && currentNumbers[y, x] != 0)
                         {
@@ -500,14 +519,18 @@ namespace _2048
                             {
                                 for (int i = 1; i < x; i++)
                                 {
-                                    currentNumbers[y, i] = currentNumbers[y, i - 1];
-                                    currentBoxes[y, i] = currentBoxes[y, i - 1];
+                                    int k = currentNumbers[y, i - 1]; 
+                                    currentNumbers[y, i] = k;
+                                    currentBoxes[y, i].Visible = currentBoxes[y, i - 1].Visible;
+                                    currentBoxes[y, i].BackColor = currentBoxes[y, i - 1].BackColor;
                                 }
 
                                 currentNumbers[y, 0] = 0;
                                 currentBoxes[y, 0].Visible = false;
 
-                            } 
+                            }
+
+                            UpdateNumbers();
 
                             try
                             {
@@ -520,48 +543,49 @@ namespace _2048
                                 {
                                     lbl_BestScore.Text = score + "";
                                 }
-                            } catch(NullReferenceException) { Console.WriteLine("NullReferenceException int score"); }
+                            }
+                            catch (NullReferenceException) { Console.WriteLine("NullReferenceException int score"); }
 
                             Console.WriteLine("");
                             Console.WriteLine("mergea");
                             PrintCurrentState();
                         }
                     }
-                } 
-                
+                }
+
 
             }
-            else if(left && !prevLeft)
+            else if (left && !prevLeft)
             {
                 //Console.WriteLine("left");
 
-                newPress = true; 
+                newPress = true;
 
-                for(int y = 0; y < 4; y++)
+                for (int y = 0; y < 4; y++)
                 {
-                    for(int x = 1; x < 4; x++)
+                    for (int x = 1; x < 4; x++)
                     {
-                        if(currentNumbers[y, x] > 0)
+                        if (currentNumbers[y, x] > 0)
                         {
-                            int stepsLeft = 0; 
-                            for(int i = 0; i < x; i++) // alla platser direkt vänster om positionen
+                            int stepsLeft = 0;
+                            for (int i = 0; i < x; i++) // alla platser direkt vänster om positionen
                             {
                                 if (currentNumbers[y, i] == 0)
-                                    stepsLeft++; 
+                                    stepsLeft++;
                             }
-                            if(stepsLeft > 0)
+                            if (stepsLeft > 0)
                             {
 
-                                int placeInArray = 0; 
+                                int placeInArray = 0;
                                 for (int i = 0; i < r.Length; i++)
                                 {
                                     if (Math.Pow(2, i + 1) == currentNumbers[y, x])
                                         placeInArray = i;
                                 }
 
-                                currentBoxes[y, x - stepsLeft].BackColor = System.Drawing.Color.FromArgb(r[placeInArray], g[placeInArray], b[placeInArray]); 
-                                currentBoxes[y, x - stepsLeft].Visible = true; 
-                                currentBoxes[y, x].Visible = false; 
+                                currentBoxes[y, x - stepsLeft].BackColor = System.Drawing.Color.FromArgb(r[placeInArray], g[placeInArray], b[placeInArray]);
+                                currentBoxes[y, x - stepsLeft].Visible = true;
+                                currentBoxes[y, x].Visible = false;
 
                                 int n = currentNumbers[y, x];
                                 currentNumbers[y, x - stepsLeft] = n;
@@ -572,15 +596,15 @@ namespace _2048
                                 //PrintCurrentState();
 
                             }
-                            
+
                         }
                     }
-                    
+
                 }
-                
-                for(int y = 0; y < 4; y++)
+
+                for (int y = 0; y < 4; y++)
                 {
-                    for(int x = 1; x < 4; x++)
+                    for (int x = 1; x < 4; x++)
                     {
                         if (currentNumbers[y, x - 1] == currentNumbers[y, x] && currentNumbers[y, x] != 0)
                         {
@@ -603,14 +627,18 @@ namespace _2048
                             {
                                 for (int i = x; i < 3; i++)
                                 {
-                                    currentNumbers[y, i] = currentNumbers[y, i + 1];
-                                    currentBoxes[y, i] = currentBoxes[y, i + 1];
+                                    int k = currentNumbers[y, i + 1]; 
+                                    currentNumbers[y, i] = k;
+                                    currentBoxes[y, i].Visible = currentBoxes[y, i + 1].Visible;
+                                    currentBoxes[y, i].BackColor = currentBoxes[y, i + 1].BackColor;
                                 }
 
                                 currentNumbers[y, 3] = 0;
                                 currentBoxes[y, 3].Visible = false;
 
-                            } 
+                            }
+
+                            UpdateNumbers();
 
                             try
                             {
@@ -623,19 +651,20 @@ namespace _2048
                                 {
                                     lbl_BestScore.Text = score + "";
                                 }
-                            } catch(NullReferenceException) { Console.WriteLine("NullReferenceException int score"); }
+                            }
+                            catch (NullReferenceException) { Console.WriteLine("NullReferenceException int score"); }
 
                             Console.WriteLine("");
                             Console.WriteLine("mergea");
                             PrintCurrentState();
                         }
                     }
-                } 
-                
-                
+                }
+
+
             }
 
-            if(newPress) //spawna ny box vid varje move 
+            if (newPress) //spawna ny box vid varje move 
             {
                 UpdateNumbers();
                 PrintCurrentState();
@@ -760,12 +789,14 @@ namespace _2048
 
             if(randomFloat <= 0.1f) 
                 placeInArray = 1;
+
             Console.WriteLine("placeInArray: " + placeInArray);
             currentBoxes[y_index, x_index].BackColor = System.Drawing.Color.FromArgb(r[placeInArray], g[placeInArray], b[placeInArray]);
             currentNumbers[y_index, x_index] = (int)Math.Pow(2, placeInArray + 1);
             currentBoxes[y_index, x_index].Visible = true; 
 
             numbers[y_index, x_index].Text = (int)Math.Pow(2, placeInArray + 1) + "";
+            numbers[y_index, x_index].ForeColor = label1.ForeColor; 
             numbers[y_index, x_index].Visible = true; 
 
             //Label lbl = new Label();
@@ -879,18 +910,18 @@ namespace _2048
             int prev_x = x_index;
             int prev_y = y_index;
 
-            x_index = rnd.Next(0, 3);
-            y_index = rnd.Next(0, 3);
+            int x_index2 = rnd.Next(0, 3);
+            int y_index2 = rnd.Next(0, 3);
 
-            if (x_index == prev_x && y_index == prev_y)
+            if (x_index2 == prev_x && y_index2 == prev_y)
             {
-                while (x_index == prev_x && y_index == prev_y)
+                while (x_index2 == prev_x && y_index2 == prev_y)
                 {
-                    x_index = rnd.Next(0, 3);
-                    y_index = rnd.Next(0, 3);
+                    x_index2 = rnd.Next(0, 3);
+                    y_index2 = rnd.Next(0, 3);
                 }
             }
-            NewBox(y_index, x_index);
+            NewBox(y_index2, x_index2);
 
             PrintCurrentState();
 
