@@ -724,7 +724,52 @@ namespace _2048
             prevUp = up; 
             prevDown = down; 
             prevRight = right; 
-            prevLeft = left; 
+            prevLeft = left;
+
+            //check loss 
+            bool movesLeft = false;
+            for(int y = 0; y < 4; y++)
+            {
+                for(int x = 0; x < 4; x++)
+                {
+                    if(currentNumbers[y, x] == 0)
+                    {
+                        movesLeft = true;
+                        break; 
+                    }
+                }
+            }
+            if(!movesLeft) // if no cels are empty, check merge-possibilities instead 
+            {
+                for (int y = 0; y < 4; y++) // x:es
+                {
+                    for (int x = 0; x < 3; x++)
+                    {
+                        if (currentNumbers[y, x] == currentNumbers[y, x + 1])
+                        {
+                            movesLeft = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            if(!movesLeft)
+            {
+                for (int x = 0; x < 4; x++) // y:s
+                {
+                    for (int y = 0; y < 3; y++)
+                    {
+                        if (currentNumbers[y, x] == currentNumbers[y + 1, x])
+                        {
+                            movesLeft = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (!movesLeft)
+                GameOver();
 
         }
 
@@ -942,6 +987,13 @@ namespace _2048
 
             PrintCurrentState();
 
+        }
+
+        void GameOver()
+        {
+            Console.WriteLine("Game Over");
+
+            
         }
 
     }
